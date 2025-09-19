@@ -12,6 +12,7 @@ dependencies = [
     "plotly>=6.3.0",
     "polars>=1.33.1",
     "pydeck>=0.9.1",
+    "pyodbc>=5.2.0",
     "sqlalchemy>=2.0.43",
     "streamlit>=1.49.1",
 ]

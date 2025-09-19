@@ -6,22 +6,20 @@ from datetime import datetime
 import plotly.express as px
 from typing import Optional
 import pydeck as pdk
+import pyodbc
 
-# Create DB engine
-connection_string = 'mysql+mysqlconnector://strava_db_user:StravaConnect@localhost:3306/strava_db'
-engine = create_engine(connection_string)
 
-# Connect to DB
-with engine.connect() as connection:
-    activities = pl.read_database(
-        query="SELECT * FROM activities",
-        connection=connection,
-        infer_schema_length = 10000,
-        schema_overrides={
-            'sport_type': pl.Categorical
-        }
+# Connect to DB   
+conn = st.connection('sql_azure',
+                       query={
+                            "driver": "ODBC Driver 17 for SQL Server",
+                            "authentication": "ActiveDirectoryInteractive",
+                            "encrypt": "yes",
+                            })
 
-    )
+activities = conn.query('SELECT * FROM activities')
+
+activities = pl.DataFrame(activities)
     
 def remove_outliers_z_score(
     df: pl.DataFrame,
@@ -44,6 +42,8 @@ def remove_outliers_z_score(
                 / pl.col(column).std().over(grouping)
             ) < z_threshold
         )
+
+activities.head()
 
 # Data prep   
 activities = activities.with_columns(
@@ -104,8 +104,8 @@ weekly_snapshot = activities.with_columns(
     pl.col('start_date_local').dt.week().alias('week')
 ).group_by('activity_year','week').agg(
     pl.col('activity_id').len().alias('activities'),
-    pl.col('distance_km').sum().alias('distance'),
-    pl.col('moving_time_hr').sum().alias('time')
+    pl.col('distance_km').sum().round(2).alias('distance'),
+    pl.col('moving_time_hr').sum().round(2).alias('time')
 ).top_k(2, by = ['activity_year', 'week']).with_columns( # Add previous week metrics
     pl.col('activities').shift(-1).alias('previous_week_activities'),
     pl.col('distance').shift(-1).alias('previous_week_distance'),
