@@ -13,7 +13,7 @@ import pyodbc
 conn = st.connection('sql_azure',
                        query={
                             "driver": "ODBC Driver 17 for SQL Server",
-                            "authentication": "ActiveDirectoryInteractive",
+                            "authentication": "ActiveDirectoryPassword",
                             "encrypt": "yes",
                             })
 
