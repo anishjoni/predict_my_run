@@ -4,8 +4,8 @@ It is a dashboard showcasing temporal and performance metrics on different sport
 
 # Motivation:
 I wanted to have control over the data I am working with and built a data analytics project showcasing different aspects of a 
-data project ranging from data sourcing, data pipelines, clearning, analysis, ML and deployment. It is meant to be an iterative process
-that evolves over time. Below is a rough scope and roadmap for the project:
+data project ranging from data sourcing, data pipelines, clearning, analysis, ML and deployment. It is meant to be an iterative process that evolves over time. 
+Below is a rough scope and roadmap for the project:
 - **Data Access:** Access activities data using `Strava API`.
 - **Database Design:** Develop Database schema on `Azure SQL`/`MySQL` to store and utilize pulled activies data for analysis.
 - **Data Orchestration:** Automate data refresh by pulling latest activities data based on event/time based triggers using `Prefect`/`Azure Data Facory`.
@@ -18,4 +18,5 @@ that evolves over time. Below is a rough scope and roadmap for the project:
 
 #Usage:
 https://predict-my-run.azurewebsites.net/
+
 
