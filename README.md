@@ -3,8 +3,7 @@ This is an end-to-end data analysis & ML project built on top of activities data
 It is a dashboard showcasing temporal and performance metrics on different sports activities captured using Strava.
 
 # Motivation:
-I wanted to have control over the data I am working with and built a data analytics project showcasing different aspects of a 
-data project ranging from data sourcing, data pipelines, clearning, analysis, ML and deployment. It is meant to be an iterative process that evolves over time. 
+I wanted to have control over the data I am working with so I built a data analytics project showcasing different aspects of a data project starting from data sourcing to building and deploying ML models. This is meant to be an iterative process that evolves over time. 
 Below is a rough scope and roadmap for the project:
 - **Data Access:** Access activities data using `Strava API`.
 - **Database Design:** Develop Database schema on `Azure SQL`/`MySQL` to store and utilize pulled activies data for analysis.
@@ -18,5 +17,6 @@ Below is a rough scope and roadmap for the project:
 
 #Usage:
 https://predict-my-run.azurewebsites.net/
+
 
 
