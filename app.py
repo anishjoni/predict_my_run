@@ -7,19 +7,63 @@ import plotly.express as px
 from typing import Optional
 import pydeck as pdk
 import pyodbc
+from sqlalchemy.engine import URL
+import pandas as pd
 
 
-# Connect to DB   
-conn = st.connection('sql_azure',
-                       query={
-                            "driver": "ODBC Driver 17 for SQL Server",
-                            "authentication": "ActiveDirectoryPassword",
-                            "encrypt": "yes",
-                            })
 
-activities = conn.query('SELECT * FROM activities')
 
-activities = pl.DataFrame(activities)
+# Connect to DB 
+@st.cache_resource
+def get_db_engine():
+    connection_string =(
+    "DRIVER={ODBC Driver 17 for SQL Server};"
+    "SERVER=strava-azure-server.database.windows.net,1433;"
+    "DATABASE=strava_azure_db;"
+    "Authentication=ActiveDirectoryMsi;"
+    )
+    
+    connection_url = URL.create('mssql+pyodbc',
+                                query={'odbc_connect':connection_string}) 
+    return create_engine(connection_url)
+
+activities_pl = pl.DataFrame()
+try:
+    engine = get_db_engine()
+    
+    with engine.connect() as conn:
+        result = conn.execute("SELECT TOP 5 * FROM activities")
+        for row in result:
+            st.write(row)
+
+    activities_pd = conn.query("SELECT TOP 5 * FROM activities", ttl=600) 
+    activities_pl = pl.from_pandas(activities_pd)
+    st.write("✅ Successfully connected to Azure SQL with Managed Identity!")
+    st.dataframe(activities_pl)
+
+except Exception as e:
+    st.error(f"❌ Failed to connect. Error: {e}")
+    
+# Add local testing via SQl auth (username/password)
+
+
+
+
+
+# conn = st.connection('sql_azure',
+#                        query={
+#                             "driver": "ODBC Driver 17 for SQL Server",
+#                             "authentication": "ActiveDirectoryPassword",
+#                             "encrypt": "yes",
+#                             })
+# conn = st.connection("sql_new", 
+#                      query={
+#                             "driver": "ODBC Driver 17 for SQL Server",
+#                             "authentication": "ActiveDirectoryPassword",                          
+#                             "encrypt": "yes",                            })
+# activities = conn.query('SELECT * FROM activities')
+
+activities = activities_pl
     
 def remove_outliers_z_score(
     df: pl.DataFrame,
