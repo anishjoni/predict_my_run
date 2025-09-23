@@ -17,7 +17,7 @@ import pandas as pd
 @st.cache_resource
 def get_db_engine():
     connection_string =(
-    "DRIVER={ODBC Driver 17 for SQL Server};"
+    "DRIVER={ODBC Driver 18 for SQL Server};"
     "SERVER=strava-azure-server.database.windows.net,1433;"
     "DATABASE=strava_azure_db;"
     "Authentication=ActiveDirectoryMsi;"
