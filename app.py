@@ -9,8 +9,24 @@ import pydeck as pdk
 import pyodbc
 from sqlalchemy.engine import URL
 import pandas as pd
+import requests
 
+def get_msi_token(resource="https://database.windows.net/"):
+    url = (
+        "http://169.254.169.254/metadata/identity/oauth2/token"
+        f"?api-version=2018-02-01&resource={resource}"
+    )
+    headers = {"Metadata": "true"}
+    try:
+        resp = requests.get(url, headers=headers, timeout=5)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        return {"error": str(e)}
 
+st.write(" Testing MSI token retrieval...")
+result = get_msi_token()
+st.json(result)
 
 
 # Connect to DB 
