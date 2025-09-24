@@ -54,6 +54,9 @@ jobs:
           name: python-app
           path: temp_artifact
       
+      - name: List downloaded artifacts
+        run: ls -la temp_artifact
+      
       - name: Login to Azure
         uses: azure/login@v2
         with:
