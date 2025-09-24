@@ -69,4 +69,7 @@ jobs:
         with:
           app-name: 'predict-my-run'
           package: temp_artifact/
+
+      - name: List artifacts after deployment step
+        run: ls -la temp_artifact
           
