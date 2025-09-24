@@ -68,5 +68,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'predict-my-run'
-          package: temp_artifact/output.tar.gz
+          package: temp_artifact/
           
