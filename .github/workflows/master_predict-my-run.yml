@@ -52,6 +52,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python-app
+          path: temp_artifact
+
+      - name: Extract artifact to wwwroot
+        run: |
+          AZURE_WEBAPP_PATH="/home/site/wwwroot"
+          mkdir -p ${{ env.AZURE_WEBAPP_PATH }}
+          unzip -o temp_artifact/your-artifact.zip -d ${{ env.AZURE_WEBAPP_PATH }}
+          chmod +x $AZURE_WEBAPP_PATH/run.sh
+          
+      - name: Verify extracted files
+        run: ls -la ${{ env.AZURE_WEBAPP_PATH }}
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -62,8 +73,8 @@ jobs:
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
-        id: deploy-to-webapp
         with:
           app-name: 'predict-my-run'
           slot-name: 'Production'
+          package: /home/site/wwwroot/
           
