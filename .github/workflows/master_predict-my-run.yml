@@ -57,12 +57,12 @@ jobs:
       - name: Extract artifact to wwwroot
         run: |
           AZURE_WEBAPP_PATH="/home/site/wwwroot"
-          mkdir -p ${{ env.AZURE_WEBAPP_PATH }}
-          unzip -o temp_artifact/your-artifact.zip -d ${{ env.AZURE_WEBAPP_PATH }}
+          mkdir -p $AZURE_WEBAPP_PATH
+          unzip -o temp_artifact/your-artifact.zip -d $AZURE_WEBAPP_PATH
           chmod +x $AZURE_WEBAPP_PATH/run.sh
           
       - name: Verify extracted files
-        run: ls -la ${{ env.AZURE_WEBAPP_PATH }}
+        run: ls -la $AZURE_WEBAPP_PATH
       
       - name: Login to Azure
         uses: azure/login@v2
