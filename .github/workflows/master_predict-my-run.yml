@@ -58,7 +58,7 @@ jobs:
         run: |
           AZURE_WEBAPP_PATH="/home/site/wwwroot"
           mkdir -p $AZURE_WEBAPP_PATH
-          unzip -o temp_artifact/your-artifact.zip -d $AZURE_WEBAPP_PATH
+          tar -xzf temp_artifact/output.tar.gz -d $AZURE_WEBAPP_PATH
           chmod +x $AZURE_WEBAPP_PATH/run.sh
           
       - name: Verify extracted files
