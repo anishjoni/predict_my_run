@@ -29,15 +29,6 @@ jobs:
       
       - name: Generate requirements.txt
         run: uv pip compile pyproject.toml -o requirements.txt
-
-      - name: Install dependencies
-        working-directory: '.'
-        run: |
-          uv venv antenv
-          source antenv/bin/activate
-          uv pip install --upgrade pip setuptools wheel
-          uv pip install -r requirements.txt
-
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
 
@@ -72,12 +63,17 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_32172F26670C49CA8D63F855BAD7EA3D }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_88BDE45FAA314A0DB94AEC233DEE2B39 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2BAFA860D6D64DE2AE209B0E4FE9D51A }}
+      
+      - name: Create ZIP package
+        run: |
+          cd temp_artifact
+          zip -r ../app.zip app.py main.py run.sh requirements.txt
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'predict-my-run'
-          package: temp_artifact/
+          package: app.zip
 
       - name: List artifacts after deployment step
         run: ls -la temp_artifact
