@@ -9,6 +9,10 @@ python -m pip install --upgrade pip
 pip install uv
 
 # Install dependencies from requirements.txt using uv
+echo "Creating virtual env..."
+uv venv
+source .venv/bin/activate
+
 echo "Installing dependencies with uv..."
 uv pip install -r requirements.txt
 
