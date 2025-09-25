@@ -13,6 +13,9 @@ echo "Creating virtual env..."
 uv venv
 source .venv/bin/activate
 
+echo "List files in current directory..."
+ls
+
 echo "Installing dependencies with uv..."
 uv pip install -r requirements.txt
 
