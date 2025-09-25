@@ -29,7 +29,7 @@ result = get_msi_token()
 st.json(result)
 
 
-# Connect to DB 
+#Connect to DB 
 @st.cache_resource
 def get_db_engine():
     connection_string =(
@@ -60,11 +60,21 @@ try:
 except Exception as e:
     st.error(f"❌ Failed to connect. Error: {e}")
     
-# Add local testing via SQl auth (username/password)
 
+# Local testing via SQl auth (username/password)
+connection_string = 'mysql+mysqlconnector://strava_db_user:StravaConnect@localhost:3306/strava_db'
+engine = create_engine(connection_string)
 
+conn = st.connection('sql_azure',
+                       query={
+                            "driver": "ODBC Driver 17 for SQL Server",
+                            "authentication": "ActiveDirectoryInteractive",
+                            "encrypt": "yes",
+                            })
 
+activities = conn.query('SELECT * FROM activities')
 
+activities = pl.DataFrame(activities)
 
 # conn = st.connection('sql_azure',
 #                        query={
@@ -79,7 +89,6 @@ except Exception as e:
 #                             "encrypt": "yes",                            })
 # activities = conn.query('SELECT * FROM activities')
 
-activities = activities_pl
     
 def remove_outliers_z_score(
     df: pl.DataFrame,
