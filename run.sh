@@ -8,10 +8,13 @@ echo "Installing uv..."
 python -m pip install --upgrade pip
 pip install uv
 
+echo "List files in current directory..."
+ls
+
 # Install dependencies from requirements.txt using uv
 echo "Creating virtual env..."
 uv venv
-source .venv/bin/activate
+. .venv/bin/activate
 
 echo "List files in current directory..."
 ls
