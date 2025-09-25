@@ -76,5 +76,5 @@ jobs:
           package: app.zip
 
       - name: List artifacts after deployment step
-        run: ls -la temp_artifact
+        run: ls -lah ..
           
